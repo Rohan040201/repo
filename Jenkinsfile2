@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define any environment variables you need
+        PROJECT_NAME = "MyProject"
+    }
+
+    stages {
+        // Checkout stage to pull the latest code from the repository
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/Rohan040201/repo.git'
+            }
+        }
+
+        // Build stage to compile or build the project
+        stage('Build') {
+            steps {
+                sh 'echo "Building the project..."'
+                // Replace with your build commands, e.g., Maven, Gradle, etc.
+                // sh './gradlew build'
+            }
+        }
+
+        // Testing stage to run unit or integration tests
+        stage('Test') {
+            steps {
+                sh 'echo "Running tests..."'
+                // Add test execution commands here
+                // e.g., sh './gradlew test'
+            }
+        }
+
+        // Deployment stage to deploy the project
+        stage('Deploy') {
+            steps {
+                sh 'echo "Deploying the project..."'
+                // Replace with deployment commands, such as deploying to AWS, Docker, Kubernetes, etc.
+                // e.g., sh 'docker-compose up -d'
+            }
+        }
+
+        // Post build actions, e.g., sending notifications
+        stage('Post-build Actions') {
+            steps {
+                sh 'echo "Performing post-build actions..."'
+                // You can add actions like sending notifications, archiving artifacts, etc.
+                // e.g., mail to: 'someone@example.com', subject: 'Build Status', body: 'Build complete'
+            }
+        }
+    }
+
+    post {
+        // Actions to perform after the pipeline has completed
+        success {
+            echo "Pipeline completed successfully."
+            // Optional: You can notify successful completion via Slack, email, etc.
+        }
+        failure {
+            echo "Pipeline failed."
+            // Optional: You can notify failure via Slack, email, etc.
+        }
+        always {
+            echo "Cleaning up and finalizing the pipeline."
+            // Optional: Any cleanup actions such as deleting temp files, logs, etc.
+        }
+    }
+}
+
